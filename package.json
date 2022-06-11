@@ -2,12 +2,21 @@
   "name": "bg-programming-node-express-typescript-skeleton",
   "version": "1.0.0",
   "private": false,
+  "author": "BGKim",
   "scripts": {
     "start": "node ./build/server.js",
     "setup": "_setup/setup.sh",
     "build": "./build.sh",
     "dev": "./run_local_dev.sh"
   },
+  "keywords": [
+    "node",
+    "typescript",
+    "node typescript",
+    "eslint",
+    "bg"
+  ],
+  "repository": "https://github.com/BG-Programming/node-express-typescript-skeleton",
   "dependencies": {
     "argon2": "^0.28.5",
     "cookie-parser": "~1.4.6",
