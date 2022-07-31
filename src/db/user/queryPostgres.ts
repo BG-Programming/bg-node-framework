@@ -1,5 +1,5 @@
 /**************************************************************************************************
-    File Name   : queryPostgres.js
+    File Name   : queryPostgres.ts
 
     Description :
         BG Programming test user postgresql query module

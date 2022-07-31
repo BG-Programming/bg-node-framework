@@ -1,5 +1,5 @@
 /**************************************************************************************************
-    File Name   : userDAO.js
+    File Name   : userDAO.ts
 
     Description :
         BG Programming test user DAO module

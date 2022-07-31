@@ -1,5 +1,5 @@
 /**************************************************************************************************
-    File Name	: utilsEx.js
+    File Name	: utilsEx.ts
     Description
         Utils extention for project
         프로젝트에서 사용하는 유틸을 기술한다.

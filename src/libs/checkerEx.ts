@@ -1,5 +1,5 @@
 /**************************************************************************************************
-    File Name	: checkerEx.js
+    File Name	: checkerEx.ts
     Description
         Checker extention for project
         여기에 일반적인 체크 사항이 아니라 프로젝트에 특화되어 체크해야하는 사항을 기술한다.

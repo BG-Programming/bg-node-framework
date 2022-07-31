@@ -1,8 +1,13 @@
 /**************************************************************************************************
-    File Name   : userController.js
+    File Name   : userController.ts
 
     Description :
+        BG Programming test user api controller
 
+    https://github.com/BG-Programming/node-express-typescript-skeleton
+
+    Update History :
+        2022.06     BGKim       Create
 **************************************************************************************************/
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,6 +21,9 @@ import argon2 from "argon2";
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//                                      Route                                                    //
+///////////////////////////////////////////////////////////////////////////////////////////////////
 module.exports.route = function ({ api } : RouterParameters) {
     // Sign up & Sign in
     api.guest.post  ("/api/user/sign-up",       signup);

@@ -1,5 +1,5 @@
 /**************************************************************************************************
-	File Name	: auth.js
+	File Name	: auth.ts
 	Description
 	  Singleton class for authrity
 

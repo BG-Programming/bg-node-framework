@@ -1,5 +1,5 @@
 /**************************************************************************************************
-    File Name   : postgresUtils.js
+    File Name   : postgresUtils.ts
 
     Description :
         Postgresql Utils

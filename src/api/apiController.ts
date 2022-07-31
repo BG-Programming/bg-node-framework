@@ -1,5 +1,5 @@
 /**************************************************************************************************
-    File Name   : queryPostgres.js
+    File Name   : apiController.ts
 
     Description :
         BG Programming test user postgresql query module
@@ -8,8 +8,7 @@
         2022.06     BGKim       Create
 **************************************************************************************************/
 
-//const {define} = require("@libs/stdlib.js");
-const {define} = require("@stdlib");
+import {define} from "@stdlib";
 import { api } from "@libs/api";
 
 

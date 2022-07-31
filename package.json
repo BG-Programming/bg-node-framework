@@ -1,5 +1,5 @@
 {
-  "name": "bg-programming-node-express-typescript-skeleton",
+  "name": "bgp-node-express-typescript-skeleton",
   "version": "1.0.0",
   "private": false,
   "author": "BGKim",
@@ -11,10 +11,11 @@
   },
   "keywords": [
     "node",
-    "typescript",
+    "typescript skeleton",
     "node typescript",
     "eslint",
-    "bg"
+    "bg",
+    "bgprogramming"
   ],
   "repository": "https://github.com/BG-Programming/node-express-typescript-skeleton",
   "dependencies": {
