@@ -19,7 +19,7 @@ const { error }     = require("@stdlib");
 
 async function signup(client : PoolClient, email : string, password : string) {
     await client.query (
-        `INSERT INTO member(email, password) VALUES($1, $2) `,
+        `INSERT INTO users(email, password) VALUES($1, $2) `,
         [email, password]
     );
 };
