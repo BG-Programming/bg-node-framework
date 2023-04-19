@@ -1,5 +1,5 @@
 /**************************************************************************************************
-	File Name	: auth.ts
+	File Name	: auth.js
 	Description
 	  Singleton class for authrity
 
@@ -11,6 +11,7 @@
 //                                  Required Modules                                             //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 import { v4 as uuidv4 } from 'uuid';
+import { assert } from './stdlib';
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface AuthData{
 	lastAccessTime : number;
-	userInfo : any;
+	userInfo : any;		// eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 class Auth {
@@ -50,21 +51,16 @@ class Auth {
 	// Security key 인증 만료 시간
 	miliSecondExpireTime = 7 * 24 * 60 * 60 * 1000;
 
-	private getExpireTime(securityToken : string) {
-		let authData  = this.tableSecurityToken.get(securityToken);
-		let lastAccessTime = authData ? authData.lastAccessTime : 0;
-		return lastAccessTime + this.miliSecondLastExpireCheckTime;
-	}
-
+	
 	private _checkExpireTime() {
-		let now = Date.now();
+		const now = Date.now();
 		if(  now - this.miliSecondLastExpireCheckTime < this.miliSecondExpireCheckPeriod )
 			return ;
 
 		this.miliSecondLastExpireCheckTime = now;
-		for ( let securityToken in this.tableSecurityToken  ) {
-			let authData  = this.tableSecurityToken.get(securityToken);
-			let lastAccessTime = authData ? authData.lastAccessTime : 0;
+		for ( const securityToken in this.tableSecurityToken  ) {
+			const authData  = this.tableSecurityToken.get(securityToken);
+			const lastAccessTime = authData ? authData.lastAccessTime : 0;
 			if( this.miliSecondExpireTime < now - lastAccessTime  )
 				this._deleteSecurityToken( securityToken  );
 		}
@@ -74,11 +70,7 @@ class Auth {
 		this.tableSecurityToken.delete(securityToken);
 	}
 
-	private _containToken( securityToken : string ) {
-		return securityToken in this.tableSecurityToken;
-	};
-
-
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private _insertSecurityTokenTable ( securityToken : string, userInfo : any ) {
 		this.tableSecurityToken.set(securityToken, {
 			lastAccessTime : Date.now(),
@@ -89,18 +81,20 @@ class Auth {
 
 	public getSecurityToken( propertyName : string, id : string | number ) : string | null {
 		this._checkExpireTime();
-		this.tableSecurityToken.forEach((authData : AuthData, securityToken : string)=>{
+		for( const [securityToken, authData] of this.tableSecurityToken ) {
 			if( authData.userInfo[propertyName] === id ) {
 				authData.lastAccessTime = Date.now();
 				console.log("return exists token");
+				console.log(securityToken);
 				return securityToken;
 			}
-		});
-
+		}
+		
 		return null;
 	}
 
 	// 사용자 정보를 메모리에 올리고 토큰을 발급한다.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public insertSecurityToken( userInfo : any ) : string {
 		const securityToken = uuidv4();
 		this._insertSecurityTokenTable( securityToken, userInfo );
@@ -113,24 +107,33 @@ class Auth {
 		return this.tableSecurityToken.get(securityToken) !== undefined;
 	}
 
-
-	public getUserInfo( securityToken : string ) : any | null {
-		"use strict";
+	
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public getUserInfo( securityToken : string ) : any | undefined {		
 		this._checkExpireTime();
 		// Security token을 사용하면 마지막 접근 시간을 갱신한다
-		let authData = this.tableSecurityToken.get(securityToken);
+		const authData = this.tableSecurityToken.get(securityToken);
 		if( authData ) {
 			authData.lastAccessTime = Date.now();
 			return authData.userInfo;
 		}
 		else
-			return null;
-	};
+			return undefined;
+	}
 
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public getUserInfoWithSecurityToken( securityToken : string ) : any {
 		return this.getUserInfo(securityToken);
-	};
+	}
+
+	public updateBadgeDisplayName(badgeId : number, newDisplayName : string){		
+		const token = this.getSecurityToken("badgeId", badgeId);		
+		assert( token !== null );
+		const userInfo = this.getUserInfo(token);
+		userInfo.badgeInfo.displayName = newDisplayName;
+		this.tableSecurityToken.set(token, {lastAccessTime : Date.now(), userInfo} );	
+	}
 }
 
 

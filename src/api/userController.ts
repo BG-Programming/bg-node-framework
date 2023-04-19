@@ -24,14 +24,14 @@ import argon2 from "argon2";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      Route                                                    //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-module.exports.route = function ({ api } : RouterParameters) {
+export default function route({api}:RouterParameters) {
     // Sign up & Sign in
     api.guest.post  ("/api/user/sign-up",       signup);
     api.guest.post  ("/api/user/login",         login);
 
     // My Page
     api.get         ("/api/mypage",             getMyPage);
-};
+}
 
 
 
@@ -132,10 +132,10 @@ interface signupBodyParameter {
 async function login({body} : UserApiParams<loginBodyParameter>) {
     checker.checkRequiredStringParameters(body.email, body.password);
 
-    let jsonUserInfo =  await userDAO.login(body.email);
+    const jsonUserInfo =  await userDAO.login(body.email);
     if (await argon2.verify(jsonUserInfo.password, body.password)) {        
         delete jsonUserInfo.password;
-        let strSecurityToken = _loginAndIssueToken(jsonUserInfo);
+        const strSecurityToken = _loginAndIssueToken(jsonUserInfo);
         return {
             userInfo : jsonUserInfo,
             token : strSecurityToken

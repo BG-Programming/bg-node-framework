@@ -16,19 +16,24 @@ import error  from "./error";
 import auth   from "./auth.js";
 import assert from "assert";
 import _ from "lodash";
-import { Request, Response, Application, RequestHandler } from 'express';
+import { Request, Response, Express } from 'express';
 import {
-    API, ApiHandler, ApiHandlers,
+    ApiHandler, ApiHandlers,
     UserInfo, GuestApiParams, UserApiParams
 } from "@appTypes";
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CallbackApiFunction = (params : any)=>any;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                  Class Implementation                                         //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
 class BGAPI
 {
-    private app: Application | null = null;
+    private app: Express | null = null;
 
     guest: ApiHandlers;
     admin: ApiHandlers;
@@ -51,23 +56,24 @@ class BGAPI
         this.delete = memberApiHandlers.delete;
     }
 
-    init(app: Application) {
+    init(app: Express) {
         this.app = app;
     }
 
     private _createAPIHandlers(authLevel: string): ApiHandlers {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const _this = this;
         return {
-            get: async function(path: string, fnExecute: Function) {
+            get: async function(path: string, fnExecute: CallbackApiFunction) {
                 _this._get(path, fnExecute, authLevel);
             },
-            post: async function(path: string, fnExecute: Function) {
+            post: async function(path: string, fnExecute: CallbackApiFunction) {
                 _this._post(path, fnExecute, authLevel);
             },
-            put: async function(path: string, fnExecute: Function) {
+            put: async function(path: string, fnExecute: CallbackApiFunction) {
                 _this._put(path, fnExecute, authLevel);
             },
-            delete: async function(path: string, fnExecute: Function) {
+            delete: async function(path: string, fnExecute: CallbackApiFunction) {
                 _this._delete(path, fnExecute, authLevel);
             },
         };
@@ -75,40 +81,44 @@ class BGAPI
 
     private _get(
         path: string,
-        fnExecute: Function,
+        fnExecute: CallbackApiFunction,
         authLevel: string
     ) {
-        this.app!.get(path, async (request, response) => {
+        assert( this.app !== null );
+        this.app.get(path, async (request, response) => {
             await _defaultProc(request, response, fnExecute, authLevel);
         });
     }
 
     private _post(
         path: string,
-        fnExecute: Function,
+        fnExecute: CallbackApiFunction,
         authLevel: string = define.authLevel.member
     ) {
-        this.app!.post(path, async (request, response) => {
+        assert( this.app !== null );
+        this.app.post(path, async (request, response) => {
             await _defaultProc(request, response, fnExecute, authLevel);
         });
     }
 
     private _put(
         path: string,
-        fnExecute: Function,
+        fnExecute: CallbackApiFunction,
         authLevel: string = define.authLevel.member
     ) {
-        this.app!.put(path, async (request, response) => {
+        assert( this.app !== null );
+        this.app.put(path, async (request, response) => {
             await _defaultProc(request, response, fnExecute, authLevel);
         });
     }
 
     private _delete(
         path: string,
-        fnExecute: Function,
+        fnExecute: CallbackApiFunction,
         authLevel: string = define.authLevel.member
     ) {
-        this.app!.delete(path, async (request, response) => {
+        assert( this.app !== null );
+        this.app.delete(path, async (request, response) => {
             await _defaultProc(request, response, fnExecute, authLevel);
         });
     }
@@ -133,13 +143,14 @@ function getUserIp(request: Request) {
 }
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function responseMessage(response : Response, jsonMessage : any) {
     "use strict";
     response.writeHead( error.responseCodes.RESPONSE_CODE_OK, {"Content-Type" : "application/json"} );
     if( jsonMessage === undefined || jsonMessage === null )
         return response.end("{}");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const jsonResponse : any = {};
     if (jsonMessage.constructor === Array) {
         jsonResponse[config.responseTopLevelDataName] = {items: jsonMessage};
@@ -172,7 +183,7 @@ function sendErrorMessage(
 }
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function defaultErrorProcess( response: Response, e: any ) {
   "use strict";
   assert( e !== undefined );
@@ -193,7 +204,7 @@ function defaultErrorProcess( response: Response, e: any ) {
 }
 
 function getUserInfoIfExist( request : Request ) {
-    let jsonUserIp = { ip : getUserIp(request) };
+    const jsonUserIp = { ip : getUserIp(request) };
     const strSecurityToken = request.header("Authorization");
     if( !strSecurityToken )
         return jsonUserIp;
@@ -230,7 +241,7 @@ function getUserInfoAndRejectNotAdmin( request: Request ) {
 function getExecuteParamsWithRequest(
     request: Request,
     userInfo: UserInfo | null
-): GuestApiParams<any> | UserApiParams<any> {
+): GuestApiParams<any> | UserApiParams<any> {   // eslint-disable-line @typescript-eslint/no-explicit-any
     return {
         params : request.params,
         query : request.query,
@@ -246,7 +257,7 @@ function getExecuteParamsWithRequest(
 async function _defaultProc(
     request: Request,
     response: Response,
-    fnExecute: Function,
+    fnExecute: CallbackApiFunction,
     strAuthLevel: string
 ){
   "use strict";
@@ -269,8 +280,7 @@ async function _defaultProc(
 
 
     const params = getExecuteParamsWithRequest(request, userInfo);
-
-    let result = await fnExecute(params);
+    const result = await fnExecute(params);
     if( result && result.cookie ) {
       assert( result.cookie.name );
       assert( result.cookie.value );

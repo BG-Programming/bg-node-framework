@@ -1,11 +1,10 @@
 import define from "@/libs/define";
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
-const morgan = require('morgan');
-const fs = require("fs");
+import express from 'express';
+import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
+import morgan from 'morgan';
+import fs from "fs";
 
 
 const app = express();
@@ -42,14 +41,15 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification, swag
 
 
 // customize debug print logging
-morgan.format('mydate', function()
-{
+morgan.format('mydate', function() 
+{   
     "use strict";
-    var t = new Date();
-    var d = [t.getFullYear(), t.getMonth() + 1, t.getDate()].join('-');
+    const t = new Date();
+    let d = [t.getFullYear(), t.getMonth() + 1, t.getDate()].join('-');
     d += ' ' + t.toLocaleTimeString();
     return d;
 });
+
 
 
 if( process.env.AWS || process.env.COFFEE) {
@@ -76,7 +76,6 @@ if( process.env.AWS || process.env.COFFEE) {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -87,6 +86,7 @@ main(app);
 
 
 // catch 404 and forward to error handler
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.use(function(req : any, res : any) {
   console.log("=========== 404 Not Found ============ ");
   const firstUrl = req.url.split("/")[1];
@@ -105,6 +105,7 @@ app.use(function(req : any, res : any) {
 
 
 // error handler
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.use(function(err : any, req : any, res : any) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -115,4 +116,5 @@ app.use(function(err : any, req : any, res : any) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;
+

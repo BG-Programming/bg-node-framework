@@ -1,4 +1,6 @@
+import {Express } from "express";
+import apiController from "./api/apiController";
 
-export default function main( app : any ){			
-	require('./api/apiController.js').route(app);
+export default function main( app : Express ){
+	apiController(app);
 }

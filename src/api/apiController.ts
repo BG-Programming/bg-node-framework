@@ -8,19 +8,15 @@
         2022.06     BGKim       Create
 **************************************************************************************************/
 
-import {define} from "@stdlib";
+import {RouterParameters}     from "@appTypes";
+import {Express} from 'express';
 import { api } from "@libs/api";
+import userControllerRouter from "./userController";
 
 
-module.exports.route = function(app : any)
-{
-	app.get( '/api/check-version',  function (request:any, response:any) {
-		"use strict";
-		require(`../libs/utils.js` ).responseMessage(response, { "version" : define.VERSION } );
-	});
+export default function  (app : Express) {
+	api.init(app);	
+	const params: RouterParameters = {app, api};	
 
-	api.init(app);
-	const params = {app, api};
-
-	require('./userController.js' ).route(params);
-};
+	userControllerRouter(params);	
+}

@@ -13,16 +13,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 import { PoolClient } from "@appTypes";
-const { assert } = require("../../libs/stdlib");
-const { error }     = require("@stdlib");
+import { error, assert } from "@stdlib";
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//                                  Latest Functions                                             //
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function signup(client : PoolClient, email : string, password : string) {
     await client.query (
         `INSERT INTO users(email, password) VALUES($1, $2) `,
         [email, password]
     );
-};
+}
 
 async function login(client : PoolClient, email : string) {
     const resultSet = await client.query (
@@ -32,7 +35,7 @@ async function login(client : PoolClient, email : string) {
     if( resultSet.rowCount === 0 )
         throw error.newInstanceNotMemberError();
     return resultSet.rows[0];
-};
+}
 
 async function getMyPage(client : PoolClient, userId : number) {
     const resultSet = await client.query (
@@ -47,7 +50,7 @@ async function getMyPage(client : PoolClient, userId : number) {
         throw error.newInstanceBadRequest("hum.... I watch you.");
     }
     return resultSet.rows[0];
-};
+}
 
 export default {
     signup, login, getMyPage

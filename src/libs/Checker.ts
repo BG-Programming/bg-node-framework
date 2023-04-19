@@ -11,7 +11,6 @@
 //                                  Import Modules                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 import assert from "assert";
-import define from "./define";
 import error  from "./error";
 import auth  from "./auth";
 
@@ -37,7 +36,7 @@ class Checker{
 
 
     public checkURL(url : string) {
-      var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
         '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
         '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
@@ -49,6 +48,7 @@ class Checker{
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public checkRequiredParameters( ...args : any[] ) {
         for( let i = 0;		i < args.length;		++i ) {
             if( args[i] === undefined || args[i] === null ) {
@@ -69,12 +69,13 @@ class Checker{
 
     public checkRequiredStringParameters( ...args : string[] ) {
         for( let i = 0;		i < args.length;		++i ) {
-            if( args[i] === undefined || args[i] === null || args[i].constructor !== String   ) {
+            if( args[i] === undefined || args[i] === null || args[i].constructor !== String ||  args[i].length === 0 ) {
                 console.log("Fail - checkRequiredStringParameters : " + i);
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
             }
         }
     }
+
 
     // minimum string length < real string length
     public checkRequiredStringMinimumLength(s : string, len : number) {
@@ -105,6 +106,7 @@ class Checker{
         }
     }
 
+    // 0은 허용하지 않는다.
     public checkRequiredPositiveIntegerParameters(...args : number[]) {
         for (let i = 0; i < args.length; i++) {
             if (args[i] === undefined || args[i] === null || args[i].constructor !== Number || !Number.isInteger(args[i]) || args[i] < 1) {
@@ -121,7 +123,7 @@ class Checker{
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
             }
 
-            let array = args[i];
+            const array = args[i];
             for( let idx = 0;		idx < array.length;		++idx  ) {
                 if( array[idx] === undefined || array[idx] === null || array[idx].constructor !== Number   )  {
                     console.log("Fail - checkRequiredNumberArrayParameters - intenal param : " + idx);
@@ -138,7 +140,7 @@ class Checker{
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
             }
 
-            let array = args[i];
+            const array = args[i];
             for( let idx = 0;		idx < array.length;		++idx  ) {
                 if( array[idx] === undefined || array[idx] === null || array[idx].constructor !== String   )  {
                     console.log("Fail - checkRequiredStringArrayParameters - intenal param : " + idx);
@@ -148,7 +150,7 @@ class Checker{
         }
     }
 
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public checkRequiredArrayParameters( ...args : Array<any>[] ) {
         for( let i = 0;     i < args.length;   ++i ) {
             if( args[i] === undefined || args[i] === null || args[i].constructor !== Array ) {
@@ -158,9 +160,12 @@ class Checker{
         }
     }
 
-    public checkOptionalPositiveIntegerParameters( ...args : (number|undefined|null)[] ) {
+    public checkOptionalPositiveIntegerParameters( ...args : Array<number|undefined|null> ) {
         for (let i = 0; i < args.length; i++) {
-            if (args[i] && args[i]!.constructor === Number && Number.isInteger(args[i]) && args[i]! < 1) {
+
+            // conflict lint parser and typescript compiler disable not null assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            if ( args[i] && args[i]!.constructor === Number && Number.isInteger(args[i]) && args[i]! < 1) {
                 console.log('Fail - checkOptionalPositiveIntegerParameters : ' + i);
                 throw new error.AppError(error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS);
             }
@@ -170,6 +175,8 @@ class Checker{
 
     public checkOptionalNumberParameters ( ...args : (number|undefined|null)[] ) {
         for( let i = 0;		i < args.length;		++i ) {
+            // conflict lint parser and typescript compiler disable not null assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             if( args[i] !==  undefined && args[i] !==  null && args[i]!.constructor !== Number  ) {
                 console.log("Fail - checkOptionalNumberParameters : " + i);
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
@@ -179,7 +186,9 @@ class Checker{
 
 
     public checkOptionalStringParameters ( ...args : (string|undefined|null)[] ) {
-        for( var i = 0;		i < args.length;	++i ) {
+        for( let i = 0;		i < args.length;	++i ) {
+            // conflict lint parser and typescript compiler disable not null assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             if( args[i] && args[i]!.constructor !== String  ) {
                 console.log("Fail - checkOptionalStringParameters : " + i);
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
@@ -189,6 +198,8 @@ class Checker{
 
     public checkOptionalBooleanParameters( ...args : (boolean|undefined|null)[] ) {
         for( let i = 0;		i < args.length;		++i ) {
+            // conflict lint parser and typescript compiler disable not null assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             if( args[i] && args[i]!.constructor !== Boolean  ) {
                 console.log("Fail - checkOptionalBooleanParameters : " + i);
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
@@ -196,9 +207,11 @@ class Checker{
         }
     }
 
-
-    public checkOptionalArrayParameters( ...args : (Array<any>|undefined|null)[] ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public checkOptionalArrayParameters( ...args : (Array<any>|undefined|null)[] ) {        
         for( let i = 0;		i < args.length;	++i )  {
+            // conflict lint parser and typescript compiler disable not null assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             if( args[i] && args[i]!.constructor !== Array ) {
                 console.log("Fail - checkRequiredArrayParameters : " + i);
                 throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
@@ -210,8 +223,12 @@ class Checker{
     public checkOptionalNumberArrayParameters( ...args : (Array<number>|undefined|null)[] ) {
         for( let i = 0;		i < args.length;		++i )  {
             if( args[i] ) {
+                // conflict lint parser and typescript compiler disable not null assertion
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 if( args[i]!.constructor === Array  )  {
-                    let array : Array<any> = args[i]!;
+                    // conflict lint parser and typescript compiler disable not null assertion
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const array : Array<any> = args[i]!;    // eslint-disable-line @typescript-eslint/no-explicit-any
                     for( let idx = 0;		idx < array.length;		++idx  ) {
                         if( array[idx] === undefined || array[idx] === null || array[idx].constructor !== Number   )  {
                             console.log("Fail - checkOptionalNumberArrayParameters - intenal param : " + idx);
@@ -230,8 +247,12 @@ class Checker{
     public checkOptionalStringArrayParameters ( ...args : (Array<string>|undefined|null)[] ) {
         for( let i = 0;		i < args.length;	++i )  {
             if( args[i] ) {
+                // conflict lint parser and typescript compiler disable not null assertion
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 if( args[i]!.constructor === Array  )  {
-                    let array : Array<any> = args[i]!;
+                    // conflict lint parser and typescript compiler disable not null assertion
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const array : Array<any> = args[i]!;    // eslint-disable-line @typescript-eslint/no-explicit-any
                     for( let idx = 0;		idx < array.length;		++idx  ) {
                         if( array[idx] === undefined || array[idx] === null || array[idx].constructor !== String   )  {
                             console.log("Fail - checkOptionalStringArrayParameters - intenal param : " + idx);
@@ -246,6 +267,7 @@ class Checker{
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public checkOptionalNotIncludeSelf (arr : Array<any>, id : string | number) {
         if( !arr || arr.constructor !== Array )
             return ;
@@ -254,9 +276,9 @@ class Checker{
             throw error.newInstanceBadRequest("Not allow including self");
     }
 
+    
 
-
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public assertObjects ( ...args : any[] ) {
         for( let i = 0;     i < args.length;   	++i )
             assert( args !== null && args !== undefined );
@@ -272,7 +294,7 @@ class Checker{
             assert( args[i].constructor === Boolean );
     }
 
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public assertArrays ( ...args : Array<any>[] ) {
         for( let i = 0;     i < args.length;   	++i )
             assert( args[i].constructor === Array );
@@ -283,7 +305,8 @@ class Checker{
             assert( args[i].constructor === String );
     }
 
-    public assertFunctions ( ...args : Function[] ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public assertFunctions ( ...args : any[] ) {
         for( let i = 0;     i < args.length;   ++i )
             assert( args[i].constructor === Function );
     }

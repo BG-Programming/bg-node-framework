@@ -10,12 +10,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                  Import Modules                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-import assert from "assert";
 import _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
 import error  from "./error";
-import auth   from "./auth.js";
-import define from "./define";
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,31 +33,31 @@ class  Utils {
     // https://www.ascii-code.com/
     // from 33 to 126
     public createRandomChar() : string {
-    	return String.fromCharCode( this._createRandomInteger(33, 127)  );
+        return String.fromCharCode( this._createRandomInteger(33, 127));
     }
 
 
-    public createRandomText ( len : number ) : string {
+    public createRandomText ( len? : number ) : string {
         let text = "";
-        if( !len )
-            len = 36;
+        if( len === undefined )
+            len = 32;
 
+        // 233a0953-6a95-4fa3-aae0-64b965985ee8
+        // 012345678901234567890123456789012345
         do {
-            var strUuid = uuidv4();
-            text = text + strUuid.substr(0,8) + strUuid.substr(9,4) + strUuid.substr(14,4) + strUuid.substr(19,4) + strUuid.substr(24,12);
-        }while( text.length <= len )
+            const strUuid = uuidv4();                
+            text = text + strUuid.substring(0,8) + strUuid.substring(9,13) + strUuid.substring(14,18) + strUuid.substring(19,23) + strUuid.substring(24);        
+        } while( text.length < len )
 
-        return text.substr(0,len);
-    };
-
-
+        return text.substring(0,len);
+    }
 
     public createRandomNumberString(len : number) : string {
         if( !len )
             len = 4;
 
-        let number : string = "";
-        for( var i =0;	i < len;	++i )
+        let number = "";
+        for( let i =0;	i < len;	++i )
             number +=  Math.floor( Math.random() * 10 ) ;
         return number;
     }
@@ -82,9 +80,9 @@ class  Utils {
 
 
 
-    public createUuid() : string{
-        var strUuid = uuidv4();
-        return strUuid.substr(0,8) + strUuid.substr(9,4) + strUuid.substr(14,4) + strUuid.substr(19,4) + strUuid.substr(24,12);
+    public createUuid() : string {
+        const strUuid = uuidv4();
+        return strUuid.substring(0,8) + strUuid.substring(9,13) + strUuid.substring(14,18) + strUuid.substring(19,23) + strUuid.substring(24,36);
     }
 
 
@@ -106,15 +104,15 @@ class  Utils {
     }
 
     public floorEx( x : number, n : number ) : number {
-        var nn = Math.pow(10, n);
+        const nn = Math.pow(10, n);
         return Math.floor( x * nn ) / nn;
     }
 
     public getDateString( utc : number ) : string {
-        let date = new Date(utc*1000);
-        let yyyy = date.getFullYear().toString();
-        let mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
-        let dd  = date.getDate().toString();
+        const date = new Date(utc*1000);
+        const yyyy = date.getFullYear().toString();
+        const mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+        const dd  = date.getDate().toString();
         return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]);
     }
 
@@ -127,35 +125,10 @@ class  Utils {
             throw error.newInstanceBadRequest("Invalid email format.");
     }
 
-
-    public checkChangeIntegerArray(_arOld : Array<number>, _arNew : Array<number>) : {add : Array<number>, sub : Array<number>} {
-        let arOld = _.cloneDeep(_arOld);
-        let arNew = _.cloneDeep(_arNew);
-
-
-        if( _.isEqual(arOld, arNew) )
-            return { add : [], sub : []};
-
-        if( !arOld )
-            return { add : arNew, sub : []};
-
-        let idx;
-        let arAdd = [];
-        for( let i = 0;        i < arNew.length;    ++i ) {
-            idx = arOld.indexOf(arNew[i]);
-            if( 0 <= idx )
-                arOld.splice(idx, 1);
-            else
-                arAdd.push(arNew[i]);
-        }
-
-        return {add : arAdd, sub : arOld };
-    }
-
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public uniq( arr : Array<any> ) : Array<any> {
         return Array.from(new Set(arr));
-    };
+    }
 
 
 
@@ -164,7 +137,7 @@ class  Utils {
         return new Promise(resolve=>{
              setTimeout(resolve,ms)
         });
-    };
+    }
 
 
 
@@ -196,21 +169,8 @@ class  Utils {
             "장비", "돌아이", "하루", "카사노바", "양치기소년",		"강아지", "무당", "장군", "베놈", "조커"
         ];
         return _getRandomItem(arAdjective) + "" + _getRandomItem(arNone);
-    };
-
-
-
-    public removeEmptyPropertyInObject(obj : any) : any {
-        let newObj : any = {};
-
-        Object.keys(obj).forEach((key) => {
-          if (obj[key] !== undefined  && obj[key] !== null) {
-            newObj[key] = obj[key];
-          }
-        });
-
-        return newObj;
     }
+
 }
 
 

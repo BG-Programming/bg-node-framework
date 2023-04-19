@@ -12,7 +12,6 @@
 //                                  Import Modules                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 import pg, { Pool, PoolClient } from 'pg';
-import define from "./define";
 import assert from "assert";
 
 
@@ -38,7 +37,7 @@ const pool = new Pool({
 class QueryBuildData {
     _client : PoolClient;
     _query : string;
-    _params : Array<any>;
+    _params : Array<any>;   // eslint-disable-line @typescript-eslint/no-explicit-any
 
     constructor(client : PoolClient) {
         this._client = client;
@@ -54,6 +53,7 @@ class QueryBuildData {
         this._query += query;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     withParam(query : string, param : any) {
         if( param === undefined )
             return ;
@@ -70,15 +70,15 @@ class QueryBuildData {
 }
 
 interface CallbackPostgres {
-    (client : PoolClient) : any;
+    (client : PoolClient) : any;    // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 class DB_Utils {
     public makeQuery (client : PoolClient)  {
         return new QueryBuildData(client);
-    };
+    }
 
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public async defaultQuery (callback : CallbackPostgres) : Promise<any> {
         const client = await pool.connect();
         try {
@@ -86,7 +86,7 @@ class DB_Utils {
         } finally {
             client.release();
         }
-    };
+    }
 
     public async defaultQueryWithTransaction(callback : CallbackPostgres)  {
         const client = await pool.connect();
@@ -101,11 +101,11 @@ class DB_Utils {
         }finally {
             client.release();
         }
-    };
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                  Export  Modules                                              //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-let _db_utilsInstance = new DB_Utils();
+const _db_utilsInstance = new DB_Utils();
 export default _db_utilsInstance;

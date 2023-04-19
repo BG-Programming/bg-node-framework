@@ -27,7 +27,7 @@ async function signup(email : string, password : string) {
     return await postgresUtils.defaultQueryWithTransaction(async (client : PoolClient)=>{
         return  await query.signup(client, email, password);
     });
-};
+}
 
 
 
@@ -37,7 +37,7 @@ async function signup(email : string, password : string) {
     return await postgresUtils.defaultQuery( async (client : PoolClient) =>
         await query.login(client, email)
     );
-};
+}
 
 
 async function getMyPage(userId : number) {
@@ -45,7 +45,7 @@ async function getMyPage(userId : number) {
     return await postgresUtils.defaultQuery(async (client : PoolClient)=>{
         return query.getMyPage(client, userId);
     });
-};
+}
 
 export default {
     signup, login,
