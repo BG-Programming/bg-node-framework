@@ -138,7 +138,10 @@ function getUserIp(request: Request) {
             return forwarded[0] || '';
         }
     } else {
-        return request.socket.remoteAddress || '';
+        let ip = request.socket.remoteAddress || '';
+        if( ip === "::ffff:127.0.0.1" )
+            ip = "127.0.0.1";
+        return ip;
     }
 }
 
