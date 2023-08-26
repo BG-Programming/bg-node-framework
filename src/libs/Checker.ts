@@ -76,6 +76,22 @@ class Checker{
         }
     }
 
+    
+    public checkRequiredStringNumberParameters( ...args : string[] ) {
+        for( let i = 0;		i < args.length;		++i ) {
+            if( args[i] === undefined || args[i] === null || args[i].constructor !== String ||  args[i].length === 0 ) {
+                console.log("Fail - checkRequiredStringNumberParameters : " + i);
+                throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
+            }
+
+            for( let j = 0;     j < args[i].length;     ++j ) {            
+                if( !('0' <= args[i][j] && args[i][j] <= '9')  ) {
+                    console.log("Fail - checkRequiredStringNumberParameters : " + i);                    
+                    throw new error.AppError( error.responseCodes.RESPONSE_BAD_REQUEST, error.errorCodes.ERROR_CODE_INVALID_PARAMETERS );
+                }
+            }
+        }
+    }
 
     // minimum string length < real string length
     public checkRequiredStringMinimumLength(s : string, len : number) {
