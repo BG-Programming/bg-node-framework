@@ -31,7 +31,8 @@ async function signup(email : string, password : string) {
 
 
 
- async function login(email : string) {
+
+async function login(email : string) {
     "use strict";
     checker.assertStrings(email);    
     return await postgresUtils.defaultQuery( async (client : PoolClient) =>

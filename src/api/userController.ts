@@ -21,14 +21,15 @@ import argon2 from "argon2";
 
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                      Route                                                    //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 export default function route({api}:RouterParameters) {
-    // Sign up & Sign in
+    // Sign up & Sign in 
     api.guest.post  ("/api/user/sign-up",       signup);
     api.guest.post  ("/api/user/login",         login);
-
+    
     // My Page
     api.get         ("/api/mypage",             getMyPage);
 }
@@ -38,7 +39,6 @@ export default function route({api}:RouterParameters) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                  Lastest Functions                                            //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 /**
@@ -71,7 +71,7 @@ export default function route({api}:RouterParameters) {
  *        description: Signup
  *
  */
-async function signup({body} : UserApiParams<signupBodyParameter>) {
+async function signup({body  } : UserApiParams<signupBodyParameter>) {    
     checker.checkRequiredStringParameters(body.email, body.password);
     const hashedPassword = await argon2.hash(body.password);
     await userDAO.signup(body.email, hashedPassword);
