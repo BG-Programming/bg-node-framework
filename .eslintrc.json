@@ -23,6 +23,6 @@
                 "varsIgnorePattern": "^_",
                 "caughtErrorsIgnorePattern": "^_"
             }
-        ]
+        ]        
     }
 }
