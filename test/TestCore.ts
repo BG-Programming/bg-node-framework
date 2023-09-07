@@ -47,7 +47,7 @@ class TestCore{
 	async login(email : string, password : string) : Promise<LoginInfo>{
 		return await new Promise((resolve, reject)=>{
 			const cmd : string = `curl --insecure --request POST ${this.SERVER_HOST}/api/user/login -H "Content-Type: application/json" ` + 
-					` -d \'{ "email" : "${email}", "password" : "${password}"\' `;
+					` -d \'{ "email" : "${email}", "password" : "${password}"}\' `;
 			exec(cmd, function(error, stdout, stderr){
 				const jsonResult = JSON.parse(stdout);	
 				console.log(jsonResult);				

@@ -45,6 +45,11 @@ interface GuestApiParams<T> extends DefaultApiParams<T> {
     userInfo?: UserInfo | null
 }
 
+interface DefaultGuestApiParams extends DefaultApiParams<undefined> {
+    userInfo: UserInfo | null
+}
+
+
 interface UserApiParams<T> extends DefaultApiParams<T> {
     userInfo: UserInfo;
 }
@@ -65,6 +70,6 @@ export type { RouterParameters }
 export {
     API, ApiHandlers, ApiHandler,
     UserInfo,
-    DefaultUserApiParams, UserApiParams, GuestApiParams,
+    DefaultUserApiParams, UserApiParams, GuestApiParams, DefaultGuestApiParams,
 	PlatformType
 }

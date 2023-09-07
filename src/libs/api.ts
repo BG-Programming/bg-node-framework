@@ -168,39 +168,42 @@ function responseMessage(response : Response, jsonMessage : any) {
 
 // 오류 처리 부분 설계시 처음에는 어떤 파리미터가 빠져 있는지, 혹은 undefined 되었는지 명시해서 알려주는 것도 고려하였다.
 // 하지만 그렇게 할 경우 악의적인 사용자에게 내부 파라미터 정보가 노출될 위험이 있으므로 개략적인 오류만을 알려준다.
-function sendErrorMessage(
+async function sendErrorMessage(
     response: Response,
     nResponseCode: number,
     nErrorCode: number,
     strMessage: string,
     strDetailMessage?: string
 ) {
-  "use strict";
-  const strMessageBuffer = (strMessage) ?  strMessage : error.getErrorString(nErrorCode) ;
-  response.writeHead( nResponseCode, {"Content-Type" : "application/json"} );
+    "use strict";
+    return new Promise(resolve=>{
+        const strMessageBuffer = (strMessage) ?  strMessage : error.getErrorString(nErrorCode) ;
+        response.writeHead( nResponseCode, {"Content-Type" : "application/json"} );
 
-  const jsonResult = 	{
-    code : nErrorCode,
-    msg : strMessageBuffer,
-    detailMessage : strDetailMessage
-  };
-  response.end( JSON.stringify( jsonResult ) );
+        const jsonResult = 	{
+            code : nErrorCode,
+            msg : strMessageBuffer,
+            detailMessage : strDetailMessage
+        };
+        response.end( JSON.stringify( jsonResult ) );
+        resolve("");
+    });
 }
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function defaultErrorProcess( response: Response, e: any ) {
+async function defaultErrorProcess( response: Response, e: any ) {
   "use strict";
   assert( e !== undefined );
   if( e instanceof error.AppError ) {
     if( e.httpResponseCode !== error.responseCodes.RESPONSE_CODE_INTERNAL_SERVER_ERROR  ) {
-      sendErrorMessage( response, e.httpResponseCode,  e.code, e.message, e.detailMessage );
+      await sendErrorMessage( response, e.httpResponseCode,  e.code, e.message, e.detailMessage );
       return ;
     }
   }
 
   // 내부 오류 메세지는 클라이언트에 자세한 사항을 알려주지 않는다.
-  sendErrorMessage(
+  await sendErrorMessage(
     response,
     error.responseCodes.RESPONSE_CODE_INTERNAL_SERVER_ERROR,
     error.errorCodes.ERROR_CODE_INTERNAL_SERVER_ERROR,
