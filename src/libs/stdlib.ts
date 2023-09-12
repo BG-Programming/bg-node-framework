@@ -13,10 +13,12 @@ import config from './config';
 import error from "./error";
 import checker from './checkerEx';
 import postgresUtils from "./postgresUtils";
+import postgresCommonQueries from './postgresCommonQueriesEx';
 
 
 export {
     postgresUtils,
+    postgresCommonQueries,
     utils,
     define,
     assert,
