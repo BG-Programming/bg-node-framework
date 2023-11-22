@@ -1,0 +1,66 @@
+Listening on port 27017
+[2m[30m[2023-11-20 오후 3:29:58] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m2.473 ms 
+[2m[30m[2023-11-20 오후 3:29:58] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.593 ms 
+[2m[30m[2023-11-20 오후 3:29:58] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.300 ms 
+[2m[30m[2023-11-20 오후 3:29:59] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.653 ms 
+[2m[30m[2023-11-20 오후 3:29:59] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.428 ms 
+[2m[30m[2023-11-20 오후 3:29:59] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.332 ms 
+Listening on port 27017
+[2m[30m[2023-11-20 오후 3:30:39] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m4.959 ms 
+[2m[30m[2023-11-20 오후 3:30:39] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m1.082 ms 
+[2m[30m[2023-11-20 오후 3:30:39] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.508 ms 
+error: 사용자 "bg"의 password 인증을 실패했습니다
+    at /home/bg/project/bg-node-framework/node_modules/pg-pool/index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async DB_Utils.defaultQueryWithTransaction (/home/bg/project/bg-node-framework/build/libs/postgresUtils.js:74:24)
+    at async Object.signup (/home/bg/project/bg-node-framework/build/db/user/userDAO.js:21:12)
+    at async signup (/home/bg/project/bg-node-framework/build/api/userController.js:66:5)
+    at async _defaultProc (/home/bg/project/bg-node-framework/build/libs/api.js:205:24)
+    at async /home/bg/project/bg-node-framework/build/libs/api.js:67:13 {
+  length: 119,
+  severity: '치명적오류',
+  code: '28P01',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'auth.c',
+  line: '326',
+  routine: 'auth_failed'
+}
+[2m[30m[2023-11-20 오후 3:31:37] [0m[31m::1 [35mPOST [30m/api/user/sign-up [1m[34m500 [0m[30m80.849 ms 
+[2m[30m[2023-11-20 오후 3:35:04] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.510 ms 
+[2m[30m[2023-11-20 오후 3:35:04] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.443 ms 
+[2m[30m[2023-11-20 오후 3:35:04] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.402 ms 
+[2m[30m[2023-11-20 오후 3:35:05] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.427 ms 
+[2m[30m[2023-11-20 오후 3:35:05] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.580 ms 
+[2m[30m[2023-11-20 오후 3:35:05] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m1.043 ms 
+[2m[30m[2023-11-20 오후 3:35:26] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.791 ms 
+[2m[30m[2023-11-20 오후 3:35:26] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.549 ms 
+[2m[30m[2023-11-20 오후 3:35:26] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.406 ms 
+[2m[30m[2023-11-20 오후 3:35:28] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.546 ms 
+[2m[30m[2023-11-20 오후 3:35:28] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.533 ms 
+[2m[30m[2023-11-20 오후 3:35:28] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m1.021 ms 
+[2m[30m[2023-11-20 오후 3:35:31] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.551 ms 
+[2m[30m[2023-11-20 오후 3:35:31] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.574 ms 
+[2m[30m[2023-11-20 오후 3:35:31] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.564 ms 
+[2m[30m[2023-11-20 오후 3:35:32] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.378 ms 
+[2m[30m[2023-11-20 오후 3:35:32] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.301 ms 
+[2m[30m[2023-11-20 오후 3:35:32] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.301 ms 
+Listening on port 27017
+[2m[30m[2023-11-20 오후 3:36:50] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m2.635 ms 
+[2m[30m[2023-11-20 오후 3:36:50] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.620 ms 
+[2m[30m[2023-11-20 오후 3:36:50] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.324 ms 
+[2m[30m[2023-11-20 오후 3:37:12] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.378 ms 
+[2m[30m[2023-11-20 오후 3:37:12] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.379 ms 
+[2m[30m[2023-11-20 오후 3:37:12] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.316 ms 
+[2m[30m[2023-11-20 오후 3:37:16] [0m[31m::1 [35mGET [30m/ [1m[34m304 [0m[30m0.391 ms 
+[2m[30m[2023-11-20 오후 3:37:16] [0m[31m::1 [35mGET [30m/assets/css/main.css [1m[34m304 [0m[30m0.365 ms 
+[2m[30m[2023-11-20 오후 3:37:16] [0m[31m::1 [35mGET [30m/favicon.ico [1m[34m304 [0m[30m0.392 ms 
